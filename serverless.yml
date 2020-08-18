@@ -1,0 +1,59 @@
+service: sls-git-template
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-domain-manager
+  - serverless-offline
+
+custom:
+  # Local configuration data.
+  defaultRegion: eu-west-1
+  region: ${opt:region, self:custom.defaultRegion}
+  environment: ${opt:stage, 'offline'}
+  version: 3
+  accounts:
+    development: '855439869752'
+    staging: '855439869752'
+    production: '024157097554'
+  account: ${self:custom.accounts.${self:custom.environment}, self:custom.accounts.development}
+  domainConfig: ${file(serverless-partials/domainConfig.yml)}
+  # Plugin config for serverless-domain-manager
+  customDomain: ${self:custom.domainConfig.${self:custom.environment}, self:custom.domainConfig.default}
+  # Babel topic
+  # Plugin config for serverless-offline
+  serverless-offline:
+    port: 3001
+  
+package:
+  individually: true
+  exclude:
+    - package.json
+    - README*
+    - config/local.*
+    - src/**
+    - mocks/**
+    - scripts/**
+    - serverless-partials/**
+    - tests/**
+    - '*.log'
+    - .cache/**
+
+provider:
+  name: aws
+  runtime: ${opt:runtime, 'nodejs12.x'}
+  stage: ${self:custom.environment}
+  region: ${self:custom.region}
+  deploymentBucket:
+    name: pbx-sls-${self:custom.environment}-assets
+  environment:
+    NODE_CONFIG_ENV: ${self:custom.environment}
+
+functions:
+  exampleFunction: ${file(./serverless-partials/function.yml)}
+
+resources:
+  Resources:
+    # # IAM roles & policies
+    
+    # DynamoDB tables
+    

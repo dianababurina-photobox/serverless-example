@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "allowJs": true,
+  "exclude": ["node_modules", "dist"],
+  "include": [".*", "*", "**/.*", "**/*", "**/*.test.ts", "optionGroup.service.test.ts"]
+}

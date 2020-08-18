@@ -1,0 +1,8 @@
+.webpack
+.vscode
+node_modules
+coverage
+build
+dist
+!.eslintrc.js
+!.prettierrc.js

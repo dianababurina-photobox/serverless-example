@@ -1,0 +1,9 @@
+# This is where you specify properties of the function -
+# name, path/value, and role that should be used
+name: ${self:service}-exampleFunction-${self:custom.environment}
+handler: dist/handlers/exampleHandler.handler
+role: FunctionRole
+events:
+  - http:
+      path: some/path/
+      method: get

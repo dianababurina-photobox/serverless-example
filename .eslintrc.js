@@ -1,0 +1,31 @@
+module.exports = {
+    root: true,
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      project: './tsconfig.eslint.json',
+    },
+    plugins: ['@typescript-eslint', 'jest', 'prettier'],
+    extends: [
+      'airbnb-typescript/base',
+      'plugin:jest/recommended',
+      'prettier/@typescript-eslint',
+      'plugin:prettier/recommended',
+    ],
+    rules: {
+      'prettier/prettier': 'error',
+      'import/prefer-default-export': 'off',
+      'max-len': ['error', { code: 250 }],
+      'max-classes-per-file': 'off',
+      '@typescript-eslint/no-use-before-define': 'off',
+      'class-methods-use-this': 'off',
+      'import/no-cycle': 'off',
+      'no-param-reassign': 'off',
+      'no-restricted-syntax': 'off',
+      'no-useless-catch': 'off',
+      'guard-for-in': 'off',
+      'no-console': 'off',
+      'jest/no-mocks-import': 'off',
+      'require-await': 'error',
+      '@typescript-eslint/no-throw-literal': 'off',
+    },
+  };

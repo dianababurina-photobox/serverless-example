@@ -1,0 +1,9 @@
+.webpack
+.vscode
+.serverless
+node_modules
+coverage
+build
+dist
+!.eslintrc.js
+!.prettierrc.js

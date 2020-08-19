@@ -13,20 +13,20 @@ This template comes with a simple lamba which you can run:
 3. Run `yarn start` to start up the local lamba service
 4. Browse to http://localhost:3001/some/path - you should see `this is a simple lambda handler` displayed on the page!
 
-# a serverless app
+## a serverless app
 These are the basic elements that make up a serverless application:
 
-## serverless.yaml
+# serverless.yaml
 This is the main aws config file - used to define the various properties of the app 
 (environments, functions etc.). This file is used to create the service and lambas in aws
 
-## tsconfig.json
+# tsconfig.json
 Specifies which files should/should not be compiled from ts
 
-## src/handlers
+# src/handlers
 Where the handler functions should go. These handler functions form the lambdas
 
-## serverless partials
+# serverless partials
 This contains 'sub-config' refefrenced in the main serverless.yaml file -
 - functions
 - tables

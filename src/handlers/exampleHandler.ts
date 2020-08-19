@@ -1,6 +1,9 @@
 /**
  * This is where you define your lamba function(s) that will interact with an 
- * incoming request/event in AWS (e.g. result of hitting an endpoint). From here you can perform various actions -
+ * incoming request/event in AWS (e.g. result of hitting an endpoint). 
+ * Each lamba function is mapped to an endpoint via yaml config (in
+ * '/serverless-partials/function.yml')
+ * From within a lamba you can perform various actions:
  * - call into a pbx api
  * - listen on an sqs queue
  * - read/write data to an aws table (e.g. dynamo)

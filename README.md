@@ -1,5 +1,5 @@
 # sls-git-template
-This is a template for creating a serverless application (e.g. service/api)  
+This is a template for creating a serverless typescript application (e.g. service/api)  
 You can use this as the boiler plate when creating your own repo!
 
 As you can see, about 70/80% of the content is just config files - as these are what

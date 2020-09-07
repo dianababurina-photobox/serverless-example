@@ -48,7 +48,7 @@ pipeline {
       }
       steps {
         sh 'cd $WORKSPACE'
-        withAWS(role: 'apps-orchestration-deployment-role-development', roleAccount: '855439869752') {
+        withAWS(role: 'fooBar-role-development', roleAccount: '855439869752') {
           awsIdentity()
           sh 'yarn deploy:feature'
         }

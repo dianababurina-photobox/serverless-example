@@ -12,18 +12,85 @@ custom:
   environment: ${opt:stage, 'offline'}
   version: 3
   accounts:
-    development: '855439869752'
-    staging: '855439869752'
-    production: '024157097554'
+    development: "855439869752"
+    staging: "855439869752"
+    production: "024157097554"
   account: ${self:custom.accounts.${self:custom.environment}, self:custom.accounts.development}
-  domainConfig: ${file(serverless-partials/domainConfig.yml)}
-  # Plugin config for serverless-domain-manager
-  customDomain: ${self:custom.domainConfig.${self:custom.environment}, self:custom.domainConfig.default}
+  # domainConfig: ${file(serverless-partials/domainConfig.yml)}
   # Babel topic
   # Plugin config for serverless-offline
   serverless-offline:
     port: 3001
-  
+  envSpecific:
+    local:
+      nodeEnv: development
+      account: "855439869752"
+      babelAccount: "855439869752"
+      serviceNames: local
+      executionTimeout: 30
+    feature:
+      nodeEnv: development
+      account: "855439869752"
+      useDomainName: false
+      serviceName: feature-${env:BRANCH_NAME, 'development'}
+      serviceShortName: feature-${file(serverless-vars.js):branchHash}
+      NumCacheNodes: 1
+      AutoFailoverEnabled: false
+      CacheNodeType: cache.t2.micro
+      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
+      certEnv: test
+      pruneRetention: 1
+      executionTimeout: 30
+    development:
+      nodeEnv: development
+      account: "855439869752"
+      useDomainName: true
+      serviceName: development
+      serviceShortName: development
+      NumCacheNodes: 1
+      AutoFailoverEnabled: false
+      CacheNodeType: cache.t2.micro
+      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
+      certEnv: test
+      pruneRetention: 1
+      executionTimeout: 30
+    staging:
+      nodeEnv: staging
+      account: "855439869752"
+      useDomainName: true
+      serviceName: staging
+      serviceShortName: staging
+      NumCacheNodes: 1
+      AutoFailoverEnabled: false
+      CacheNodeType: cache.t2.micro
+      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
+      certEnv: test
+      pruneRetention: 1
+      executionTimeout: 15
+    production:
+      nodeEnv: production
+      account: "024157097554"
+      useDomainName: true
+      serviceName: production
+      serviceShortName: production
+      NumCacheNodes: 3
+      AutoFailoverEnabled: true
+      CacheNodeType: cache.t2.micro
+      certId: 914a21be-4c31-4c08-a4eb-344c3c54d187
+      certEnv: production
+      pruneRetention: 3
+      executionTimeout: 10
+
+  ## Domain
+  certificateId: ${self:custom.envSpecific.${self:custom.environment}.certId, self:custom.envSpecific.development.certId}
+  certEnvironment: ${self:custom.envSpecific.${self:custom.environment}.certEnv, self:custom.envSpecific.development.certEnv}
+  customDomain:
+    domainName: ${self:service}-${self:custom.environment}.sls-${self:custom.certEnvironment}.photobox.com
+    createRoute53Record: true
+    endpointType: "edge"
+    certificateArn: arn:aws:acm:us-east-1:${self:custom.envSpecific.${self:custom.environment}.account}:certificate/${self:custom.certificateId}
+    enabled: ${self:custom.envSpecific.${self:custom.environment}.useDomainName}
+
 package:
   individually: true
   exclude:
@@ -35,7 +102,7 @@ package:
     - scripts/**
     - serverless-partials/**
     - tests/**
-    - '*.log'
+    - "*.log"
     - .cache/**
 
 provider:
@@ -54,6 +121,4 @@ functions:
 resources:
   Resources:
     # # IAM roles & policies
-    
     # DynamoDB tables
-    

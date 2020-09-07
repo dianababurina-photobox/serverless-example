@@ -13,39 +13,71 @@ pipeline {
   }
 
   environment {
-    SLS_DEBUG = "*"
+    SLS_DEBUG = '*'
     HOME = "${env.WORKSPACE}"
   }
 
   stages {
-    stage('Install dependencies') {
+
+    stage('install') {
       steps {
         sh 'cd $WORKSPACE'
-        sh 'yarn --frozen-lockfile'
+        sh 'yarn install'
       }
     }
 
-    stage('Static checks') {
+    stage('build') {
       steps {
-        sh 'yarn lint'
+        sh 'cd $WORKSPACE'
+        sh 'yarn build'
       }
     }
 
-    stage('Unit tests') {
+    stage('test') {
       steps {
+        sh 'cd $WORKSPACE'
         sh 'yarn test'
       }
     }
 
-    stage('Deploy: development') {
+    stage('deploy feature') {
+      when {
+          not {
+              branch 'master'
+          }
+      }
       steps {
+        sh 'cd $WORKSPACE'
+        withAWS(role: 'apps-orchestration-deployment-role-development', roleAccount: '855439869752') {
+          awsIdentity()
+          sh 'yarn deploy:feature'
         }
       }
     }
 
-    stage('Deploy: staging') {
-      when { branch 'master' }
+    stage('deploy development') {
+      when {
+        branch 'master'
+      }
       steps {
+        sh 'cd $WORKSPACE'
+        withAWS(role: 'apps-orchestration-deployment-role-development', roleAccount: '855439869752') {
+          awsIdentity()
+          sh 'yarn deploy:development'
+        }
+      }
+    }
+
+    stage('deploy staging') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh 'cd $WORKSPACE'
+        withAWS(role: 'apps-orchestration-deployment-role-staging', roleAccount: '855439869752') {
+          awsIdentity()
+          sh 'yarn deploy:staging'
+        }
       }
     }
 
@@ -56,16 +88,17 @@ pipeline {
       }
     }
 
-    stage('Deploy: production') {
-      when { branch 'master' }
+    stage('deploy production') {
+      when {
+        branch 'master'
+      }
       steps {
+        sh 'cd $WORKSPACE'
+        withAWS(role: 'apps-orchestration-deployment-role-production', roleAccount: '024157097554') {
+          awsIdentity()
+          sh 'yarn deploy:production'
+        }
       }
     }
-  }
-}
-
-def onMasterBranch(block) {
-  if (env.BRANCH_NAME == 'master') {
-    return block.call()
   }
 }

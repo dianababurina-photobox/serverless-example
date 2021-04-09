@@ -1,0 +1,7 @@
+Type: AWS::ApiGateway::DomainName
+Properties:
+  DomainName: ${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceShortName}.sls-${self:custom.certEnv}.photobox.com
+  EndpointConfiguration:
+    Types:
+      - EDGE
+  CertificateArn: arn:aws:acm:us-east-1:${self:custom.account}:certificate/${self:custom.certId}

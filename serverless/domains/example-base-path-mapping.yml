@@ -1,8 +1,8 @@
 Type: AWS::ApiGateway::BasePathMapping
 DependsOn:
-  - UniversalShippingDomainName
+  - ExampleExecutionRole
 Properties:
   BasePath: ""
-  DomainName: !Ref UniversalShippingDomainName
+  DomainName: !Ref ExampleDomainName
   RestApiId: !Ref ApiGatewayRestApi
   Stage: ${self:custom.environment}

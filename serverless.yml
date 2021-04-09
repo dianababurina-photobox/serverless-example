@@ -36,7 +36,7 @@ custom:
   environment: ${opt:stage, "development"}
   region: ${opt:region, "eu-west-1"}
   stackName: ${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceName}
-  vpcStackName: jenkins-ecom-universal-shipping-${self:custom.envSpecific.${self:custom.environment}.nodeEnv}
+  vpcStackName: jenkins-ecom-example-${self:custom.envSpecific.${self:custom.environment}.nodeEnv}
 
   serverless-offline:
     httpPort: 3010
@@ -60,5 +60,6 @@ functions:
 
 resources:
   Resources:
-    # # IAM roles & policies
-    # DynamoDB tables
+    ExampleExecutionRole: ${file(serverless/roles/example-execution-role.yml)}
+    ExampleDomainName: ${file(serverless/domains/example-domain-name.yml)}
+    ExampleBasePathMapping: ${file(serverless/domains/example-base-path-mapping.yml)}

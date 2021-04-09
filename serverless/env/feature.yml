@@ -1,0 +1,6 @@
+
+executionTimeout: 30
+pruneRetention: 1
+nodeEnv: development
+serviceName: feature-${file(serverless/helpers.js):branchName}
+serviceShortName: feature-${file(serverless/helpers.js):branchHash}

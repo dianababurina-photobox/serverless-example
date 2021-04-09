@@ -1,0 +1,5 @@
+executionTimeout: 30
+pruneRetention: 1
+nodeEnv: development
+serviceName: development
+serviceShortName: development

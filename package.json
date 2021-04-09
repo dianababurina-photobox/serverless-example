@@ -12,9 +12,9 @@
     "build:prod": "yarn cleanup && tsc -p tsconfig-prod.json",
     "start": "yarn build && sls offline start",
     "deploy:feature": "yarn build && sls deploy -v --stage feature",
-    "deploy:development": "yarn build && sls create_domain --stage development && sls deploy -v --stage development",
-    "deploy:staging": "yarn build && sls create_domain --stage staging && sls deploy -v --stage staging",
-    "deploy:production": "yarn build && sls create_domain --stage production && sls deploy -v --stage production",
+    "deploy:development": "yarn build && sls deploy -v --stage development",
+    "deploy:staging": "yarn build && sls deploy -v --stage staging",
+    "deploy:production": "yarn build && sls deploy -v --stage production",
     "prettier:check": "prettier 'src/**/*.{js,jsx}' --check",
     "lint": "eslint src/** --ext .ts",
     "lint:fix": "eslint src/** --ext .ts --fix",
@@ -76,5 +76,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-merge": "^4.2.2",
     "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "serverless-prune-plugin": "^1.5.0"
   }
 }

@@ -1,109 +1,12 @@
 service: sls-git-template
 
+disabledDeprecations:
+  - LAMBDA_HASHING_VERSION_V2
+  - AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
 plugins:
-  - serverless-dynamodb-local
-  - serverless-domain-manager
+  - serverless-deployment-bucket
   - serverless-offline
-
-custom:
-  # Local configuration data.
-  defaultRegion: eu-west-1
-  region: ${opt:region, self:custom.defaultRegion}
-  environment: ${opt:stage, 'offline'}
-  version: 3
-  accounts:
-    development: "855439869752"
-    staging: "855439869752"
-    production: "024157097554"
-  account: ${self:custom.accounts.${self:custom.environment}, self:custom.accounts.development}
-  # domainConfig: ${file(serverless-partials/domainConfig.yml)}
-  # Babel topic
-  # Plugin config for serverless-offline
-  serverless-offline:
-    port: 3001
-  envSpecific:
-    local:
-      nodeEnv: development
-      account: "855439869752"
-      babelAccount: "855439869752"
-      serviceNames: local
-      executionTimeout: 30
-    feature:
-      nodeEnv: development
-      account: "855439869752"
-      useDomainName: false
-      serviceName: feature-${env:BRANCH_NAME, 'development'}
-      serviceShortName: feature-${file(serverless-vars.js):branchHash}
-      NumCacheNodes: 1
-      AutoFailoverEnabled: false
-      CacheNodeType: cache.t2.micro
-      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
-      certEnv: test
-      pruneRetention: 1
-      executionTimeout: 30
-    development:
-      nodeEnv: development
-      account: "855439869752"
-      useDomainName: true
-      serviceName: development
-      serviceShortName: development
-      NumCacheNodes: 1
-      AutoFailoverEnabled: false
-      CacheNodeType: cache.t2.micro
-      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
-      certEnv: test
-      pruneRetention: 1
-      executionTimeout: 30
-    staging:
-      nodeEnv: staging
-      account: "855439869752"
-      useDomainName: true
-      serviceName: staging
-      serviceShortName: staging
-      NumCacheNodes: 1
-      AutoFailoverEnabled: false
-      CacheNodeType: cache.t2.micro
-      certId: 02cfa665-61ff-4477-82f2-2d9c719d0c42
-      certEnv: test
-      pruneRetention: 1
-      executionTimeout: 15
-    production:
-      nodeEnv: production
-      account: "024157097554"
-      useDomainName: true
-      serviceName: production
-      serviceShortName: production
-      NumCacheNodes: 3
-      AutoFailoverEnabled: true
-      CacheNodeType: cache.t2.micro
-      certId: 914a21be-4c31-4c08-a4eb-344c3c54d187
-      certEnv: production
-      pruneRetention: 3
-      executionTimeout: 10
-
-  ## Domain
-  certificateId: ${self:custom.envSpecific.${self:custom.environment}.certId, self:custom.envSpecific.development.certId}
-  certEnvironment: ${self:custom.envSpecific.${self:custom.environment}.certEnv, self:custom.envSpecific.development.certEnv}
-  customDomain:
-    domainName: ${self:service}-${self:custom.environment}.sls-${self:custom.certEnvironment}.photobox.com
-    createRoute53Record: true
-    endpointType: "edge"
-    certificateArn: arn:aws:acm:us-east-1:${self:custom.envSpecific.${self:custom.environment}.account}:certificate/${self:custom.certificateId}
-    enabled: ${self:custom.envSpecific.${self:custom.environment}.useDomainName}
-
-package:
-  individually: true
-  exclude:
-    - package.json
-    - README*
-    - config/local.*
-    - src/**
-    - mocks/**
-    - scripts/**
-    - serverless-partials/**
-    - tests/**
-    - "*.log"
-    - .cache/**
+  - serverless-prune-plugin
 
 provider:
   name: aws
@@ -115,8 +18,45 @@ provider:
   environment:
     NODE_CONFIG_ENV: ${self:custom.environment}
 
+package:
+  individually: true
+  exclude:
+    - .cache/**
+    - .github/**
+    - docs/**
+    - serverless/**
+    - src/**
+    - package.json
+    - README.md
+
+custom:
+  account: ${self:custom.envSpecific.${self:custom.environment}.account, "855439869752"}
+  certId: ${self:custom.envSpecific.${self:custom.environment}.certId, "02cfa665-61ff-4477-82f2-2d9c719d0c42"}
+  certEnv: ${self:custom.envSpecific.${self:custom.environment}.certEnv, "test"}
+  environment: ${opt:stage, "development"}
+  region: ${opt:region, "eu-west-1"}
+  stackName: ${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceName}
+  vpcStackName: jenkins-ecom-universal-shipping-${self:custom.envSpecific.${self:custom.environment}.nodeEnv}
+
+  serverless-offline:
+    httpPort: 3010
+    noPrependStageInUrl: true
+    useChildProcesses: true
+
+  prune:
+    automatic: true
+    includeLayers: true
+    number: ${self:custom.envSpecific.${self:custom.environment}.pruneRetention}
+
+  envSpecific:
+    local: ${file(serverless/env/local.yml)}
+    feature: ${file(serverless/env/feature.yml)}
+    development: ${file(serverless/env/development.yml)}
+    staging: ${file(serverless/env/staging.yml)}
+    production: ${file(serverless/env/production.yml)}
+
 functions:
-  exampleFunction: ${file(./serverless-partials/function.yml)}
+  exampleFunction: ${file(./serverless/functions/example.yml)}
 
 resources:
   Resources:

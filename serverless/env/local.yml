@@ -1,0 +1,5 @@
+executionTimeout: 30
+pruneRetention: 0
+nodeEnv: development
+serviceName: local
+serviceShortName: local

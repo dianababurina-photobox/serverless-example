@@ -1,0 +1,8 @@
+Type: AWS::ApiGateway::BasePathMapping
+DependsOn:
+  - UniversalShippingDomainName
+Properties:
+  BasePath: ""
+  DomainName: !Ref UniversalShippingDomainName
+  RestApiId: !Ref ApiGatewayRestApi
+  Stage: ${self:custom.environment}

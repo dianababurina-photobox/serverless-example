@@ -1,0 +1,5 @@
+executionTimeout: 15
+pruneRetention: 1
+nodeEnv: staging
+serviceName: staging
+serviceShortName: staging

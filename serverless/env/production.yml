@@ -1,0 +1,8 @@
+account: "200965300750"
+#certId: 914a21be-4c31-4c08-a4eb-344c3c54d187
+#certEnv: production
+executionTimeout: 10
+pruneRetention: 3
+nodeEnv: production
+serviceName: production
+serviceShortName: production

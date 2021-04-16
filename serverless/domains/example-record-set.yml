@@ -1,0 +1,15 @@
+Type: AWS::Route53::RecordSet
+DependsOn:
+  - ExampleDomainName
+  - ExampleBasePathMapping
+Properties:
+  HostedZoneName: sls-${self:custom.certEnv}.photobox.com.
+  Name: ${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceShortName}.sls-${self:custom.certEnv}.photobox.com.
+  Type: "A"
+  AliasTarget:
+    DNSName: !GetAtt
+      - ExampleDomainName
+      - DistributionDomainName
+    HostedZoneId: !GetAtt
+      - ExampleDomainName
+      - DistributionHostedZoneId

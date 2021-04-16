@@ -1,10 +1,14 @@
 # sls-git-template
-This is a template for creating a serverless typescript application (e.g. service/api)  
+This is a template for creating a serverless typescript application (e.g. service/api)
 You can use this as the boiler plate when creating your own repo!
 
 As you can see, about 70/80% of the content is just config files - as these are what
 'drive' the serverless app and development - e.g. linting, prettier, typescript etc.
 The only code that you really need is the lamda handlers (in `src/handlers` - the code that is run when hitting an endpoint), plus any utils that you want to create
+
+# Pre requisites
+Make sure to have a role in the AWS account were to deploy the app.
+If needed to define a new one you can probably start with `JenkinsRoleExample.yml` by replacing `xx-foo-bar-xx` with a meaningful string to identify the new serverless app.
 
 ### How to run this example app
 This template comes with a simple lamba which you can run:
@@ -17,7 +21,7 @@ This template comes with a simple lamba which you can run:
 These are the basic elements that make up a serverless application:
 
 ### serverless.yaml
-This is the main aws config file - used to define the various properties of the app 
+This is the main aws config file - used to define the various properties of the app
 (environments, functions etc.). This file is used to create the service and lambas in aws
 
 ### tsconfig.json
@@ -26,8 +30,11 @@ Specifies which files should/should not be compiled from ts
 ### src/handlers
 Where the handler functions should go. These handler functions form the lambdas
 
-### serverless partials
+### serverless
 This contains 'sub-config' refefrenced in the main serverless.yaml file -
+- domains
+- env
+- roles
 - functions
 - tables
 - etc.

@@ -28,6 +28,7 @@ package:
     - src/**
     - package.json
     - README.md
+    - node_modules/**
 
 custom:
   account: ${self:custom.envSpecific.${self:custom.environment}.account, "855439869752"}
@@ -63,5 +64,6 @@ resources:
     ExampleExecutionRole: ${file(serverless/roles/example-execution-role.yml)}
     ExampleDomainName: ${file(serverless/domains/example-domain-name.yml)}
     ExampleBasePathMapping: ${file(serverless/domains/example-base-path-mapping.yml)}
+    ExampleRecordSet: ${file(serverless/domains/example-record-set.yml)}
     # # IAM roles & policies
     # DynamoDB tables

@@ -6,9 +6,16 @@ As you can see, about 70/80% of the content is just config files - as these are 
 'drive' the serverless app and development - e.g. linting, prettier, typescript etc.
 The only code that you really need is the lamda handlers (in `src/handlers` - the code that is run when hitting an endpoint), plus any utils that you want to create
 
-# Pre requisites
+This template is making use of serverless framework.
+Docs [here](https://www.serverless.com/framework/docs/)
+
+### Pre requisites
 Make sure to have a role in the AWS account were to deploy the app.
 If needed to define a new one you can probably start with `JenkinsRoleExample.yml` by replacing `xx-foo-bar-xx` with a meaningful string to identify the new serverless app.
+
+## How to use the template
+Search and replace any string occurency of `example` within this repo with a meaningul name for your new serverless application.
+Please make sure accounts are role name are set correctly in `Jenkinsfile` before to push the initial commit to avoid creating resource under unwanted accounts.
 
 ### How to run this example app
 This template comes with a simple lamba which you can run:

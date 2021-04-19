@@ -183,13 +183,14 @@ Resources:
                   - "arn:aws:apigateway:*::/restapis*"
                   - "arn:aws:apigateway:*::/tags*"
                   - "arn:aws:apigateway:*::/domainnames*"
-
+                #permissions to list hosted zones
               - Sid: AWSRoute53ListHostedZones
                 Effect: Allow
                 Action:
                   - route53:ListHostedZones
                 Resource:
                   - "*" #action doesn't support resource-level permission
+                #permissions to add/remove a record set for your app
               - Sid: AWSRoute53
                 Effect: Allow
                 Action:
@@ -198,13 +199,13 @@ Resources:
                 Resource:
                   - !Sub arn:aws:route53:::hostedzone/${HostedZoneId}
                   - "arn:aws:route53:::change/*"
-
+                #permissions to list all certificates
               - Sid: AWSCertificateManager
                 Effect: Allow
                 Action:
                   - acm:ListCertificates
                 Resource:
-                  - "arn:aws:apigateway:*::/restapis*"
+                  - "*" #action doesn't support resource-level permission
 
               - Sid: Cloudfront
                 Effect: Allow
@@ -215,7 +216,7 @@ Resources:
                   - cloudfront:GetDistribution
                 Resource:
                   - "*"
-
+                #permissions to create an IAM role that is linked to a specific AWS service.
               - Effect: Allow
                 Action:
                   - iam:CreateServiceLinkedRole

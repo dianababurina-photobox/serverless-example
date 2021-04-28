@@ -1,0 +1,8 @@
+Type: AWS::ApiGateway::BasePathMapping
+DependsOn:
+  - ExampleExecutionRole
+Properties:
+  BasePath: ""
+  DomainName: !Ref ExampleDomainName
+  RestApiId: !Ref ApiGatewayRestApi
+  Stage: ${self:custom.environment}

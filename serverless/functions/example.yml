@@ -1,6 +1,6 @@
 # This is where you specify properties of the function -
 # name, path/value, and role that should be used
-name: ${self:service}-exampleFunction-${self:custom.environment}
+name: ${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceShortName}-function_name
 handler: dist/handlers/exampleHandler.handler
 role: FunctionRole
 events:

@@ -1,0 +1,27 @@
+Type: AWS::IAM::Role
+Properties:
+  RoleName: "${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceShortName}-lambdaRole"
+  AssumeRolePolicyDocument:
+    Version: "2012-10-17"
+    Statement:
+      - Effect: Allow
+        Principal:
+          Service:
+            - lambda.amazonaws.com
+        Action: sts:AssumeRole
+  Policies:
+    - PolicyName: LambdaExcecutionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "logs:CreateLogStream"
+              - "logs:CreateLogGroup"
+              - "logs:PutLogEvents"
+            Resource: "arn:aws:logs:${self:provider.region}:${self:custom.account}:log-group:/aws/lambda/${self:service}-*"
+
+          - Effect: "Allow"
+            Action:
+              - logs:PutLogEvents
+            Resource: "arn:aws:logs:${self:provider.region}:${self:custom.account}:log-group:/aws/lambda/${self:service}-*:*:*"

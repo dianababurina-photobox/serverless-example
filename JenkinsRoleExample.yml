@@ -43,6 +43,7 @@ Resources:
                   - iam:PassRole
                 Resource:
                   - "*"
+
               - Sid: CreationalCfn
                 Effect: Allow
                 Action:
@@ -57,6 +58,7 @@ Resources:
                   - cloudformation:ExecuteChangeSet
                 Resource:
                   - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/xx-foo-bar-xx-*"
+
               - Sid: Listings
                 Effect: Allow
                 Action:
@@ -73,6 +75,7 @@ Resources:
                   - s3:List*
                 Resource:
                   - "*"
+
               - Sid: CfBucket
                 Effect: Allow
                 Action:
@@ -83,6 +86,7 @@ Resources:
                   - s3:Put*
                 Resource:
                   - "arn:aws:s3:::xx-foo-bar-xx-*"
+
               - Sid: LambdaDeployPermissions
                 Effect: Allow
                 Action:
@@ -97,12 +101,14 @@ Resources:
                   - lambda:EnableReplication*
                 Resource:
                   - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:xx-foo-bar-xx-*"
+
               - Effect: Allow
                 Action:
                   - lambda:CreateEventSourceMapping
                   - lambda:DeleteEventSourceMapping
                 Resource:
                   - "*"
+
               - Sid: IAMExecutionRole
                 Effect: Allow
                 Action:
@@ -127,6 +133,7 @@ Resources:
                   - logs:DescribeLogGroups
                 Resource:
                   - !Sub "arn:aws:logs:*:${AWS::AccountId}:log-group::log-stream:"
+
               - Sid: LoggingAdmin
                 Effect: Allow
                 Action:
@@ -163,42 +170,76 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/xx-foo-bar-xx-*"
 
-              - Sid: ""
+              - Sid: "ApiGateway"
                 Effect: Allow
                 Action:
-                  - acm:ListCertificates
                   - apigateway:GET
                   - apigateway:POST
                   - apigateway:PUT
                   - apigateway:PATCH
                   - apigateway:DELETE
                   - apigateway:UpdateRestApiPolicy
+                Resource:
+                  - "arn:aws:apigateway:*::/restapis*"
+                  - "arn:aws:apigateway:*::/tags*"
+                  - "arn:aws:apigateway:*::/domainnames*"
+                #permissions to list hosted zones
+              - Sid: AWSRoute53ListHostedZones
+                Effect: Allow
+                Action:
+                  - route53:ListHostedZones
+                Resource:
+                  - "*" #action doesn't support resource-level permission
+                #permissions to add/remove a record set for your app
+              - Sid: AWSRoute53
+                Effect: Allow
+                Action:
+                  - route53:Get*
+                  - route53:ChangeResourceRecordSets
+                Resource:
+                  - !Sub arn:aws:route53:::hostedzone/${HostedZoneId}
+                  - "arn:aws:route53:::change/*"
+                #permissions to list all certificates
+              - Sid: AWSCertificateManager
+                Effect: Allow
+                Action:
+                  - acm:ListCertificates
+                Resource:
+                  - "*" #action doesn't support resource-level permission
+
+              - Sid: Cloudfront
+                Effect: Allow
+                Action:
                   - cloudfront:CreateDistribution
                   - cloudfront:TagResource
                   - cloudfront:UpdateDistribution
                   - cloudfront:GetDistribution
-                  - route53:Create*
-                  - route53:Delete*
-                  - route53:Get*
-                  - route53:List*
-                  - route53:Change*
-                  - iam:CreateServiceLinkedRole
                 Resource:
                   - "*"
+                #permissions to create an IAM role that is linked to a specific AWS service.
+              - Effect: Allow
+                Action:
+                  - iam:CreateServiceLinkedRole
+                Resource:
+                  - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ops.apigateway.amazonaws.com/AWSServiceRoleForAPIGateway
 
               - Effect: Allow
                 Action:
                   - cloudwatch:GetDashboard
                 Resource:
                   - !Sub "arn:aws:cloudwatch::${AWS::AccountId}:dashboard/xx-foo-bar-xx-${EnvironmentTypeParam}-monitoring"
-              - Effect: Allow
+
+              - Sid: CloudwatchDashboard
+                Effect: Allow
                 Action:
+                  - cloudwatch:GetDashboard
                   - cloudwatch:PutDashboard
                   - cloudwatch:DeleteDashboards
                 Resource:
-                  - "*"
+                  - !Sub "arn:aws:cloudwatch::${AWS::AccountId}:dashboard/xx-foo-bar-xx-${EnvironmentTypeParam}-monitoring"
 
-              - Effect: Allow
+              - Sid: XRay
+                Effect: Allow
                 Action:
                   - xray:PutTraceSegments
                   - xray:PutTelemetryRecords

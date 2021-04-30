@@ -1,4 +1,5 @@
 import { Serverless } from 'serverless/aws';
+import functions from './serverless/functions';
 
 const serverlessConfiguration: Serverless = {
   service: 'sls-git-template',
@@ -20,30 +21,7 @@ const serverlessConfiguration: Serverless = {
       number: 1, // TODO: should be env specific
     },
   },
-  functions: {
-    hello: {
-      handler: 'dist/src/handlers/hello/handler.default',
-      events: [
-        {
-          http: {
-            path: 'hello',
-            method: 'get',
-          },
-        },
-      ],
-    },
-    'hello-person': {
-      handler: 'dist/src/handlers/hello-person/handler.default',
-      events: [
-        {
-          http: {
-            path: 'hello/{personName}',
-            method: 'get',
-          },
-        },
-      ],
-    },
-  },
+  functions,
 };
 
 module.exports = serverlessConfiguration;

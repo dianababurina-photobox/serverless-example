@@ -21,12 +21,12 @@ const serverlessConfiguration: Serverless = {
     },
   },
   functions: {
-    example: {
-      handler: 'dist/src/handlers/exampleHandler.handler',
+    hello: {
+      handler: 'dist/src/handlers/hello/handler.default',
       events: [
         {
           http: {
-            path: 'some/path/',
+            path: 'hello',
             method: 'get',
           },
         },

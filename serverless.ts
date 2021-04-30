@@ -32,6 +32,17 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    'hello-person': {
+      handler: 'dist/src/handlers/hello-person/handler.default',
+      events: [
+        {
+          http: {
+            path: 'hello/{personName}',
+            method: 'get',
+          },
+        },
+      ],
+    },
   },
 };
 

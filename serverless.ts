@@ -1,5 +1,6 @@
+/* eslint-disable no-template-curly-in-string */
 import { Serverless } from 'serverless/aws';
-import functions from './serverless/functions';
+import functions from './src/handlers';
 
 const serverlessConfiguration: Serverless = {
   service: 'sls-git-template',
@@ -7,9 +8,13 @@ const serverlessConfiguration: Serverless = {
   plugins: ['serverless-deployment-bucket', 'serverless-offline', 'serverless-prune-plugin'],
   provider: {
     name: 'aws',
-    runtime: 'nodejs12.x',
+    runtime: "${opt:runtime, 'nodejs12.x'}",
+    region: '${self:custom.region}',
+    profile: 'photobox-dev',
   },
   custom: {
+    region: '${opt:region, "eu-west-1"}',
+    environment: '${opt:stage, "development"}',
     'serverless-offline': {
       port: 5000,
       noPrependStageInUrl: true,

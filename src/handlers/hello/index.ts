@@ -3,7 +3,7 @@ import { AwsFunctionHandler } from 'serverless/aws';
 import { handlerPath } from '../../lib/handlerResolver';
 
 const definition: AwsFunctionHandler = {
-  name: '${self:service}-hello',
+  name: '${self:service}-${self:custom.envSpecific.${self:custom.environment}.serviceShortName}-hello',
   handler: handlerPath(__dirname, 'hello'),
   events: [
     {

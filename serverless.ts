@@ -1,6 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import { Serverless } from 'serverless/aws';
 import functions from './src/handlers';
+import env from './env';
 
 const serverlessConfiguration: Serverless = {
   service: 'sls-git-template',
@@ -10,7 +11,7 @@ const serverlessConfiguration: Serverless = {
     name: 'aws',
     runtime: "${opt:runtime, 'nodejs12.x'}",
     region: '${self:custom.region}',
-    profile: 'photobox-dev',
+    profile: '${self:custom.envSpecific.${self:custom.environment}.profile}',
   },
   custom: {
     region: '${opt:region, "eu-west-1"}',
@@ -23,8 +24,9 @@ const serverlessConfiguration: Serverless = {
     prune: {
       automatic: true,
       includeLayers: true,
-      number: 1, // TODO: should be env specific
+      number: '${self:custom.envSpecific.${self:custom.environment}.pruneRetention}',
     },
+    envSpecific: env,
   },
   functions,
 };

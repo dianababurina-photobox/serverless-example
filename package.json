@@ -16,7 +16,7 @@
     "deploy:development": "yarn build && sls deploy -v --stage development",
     "deploy:staging": "yarn build && sls deploy -v --stage staging",
     "deploy:production": "yarn build && sls deploy -v --stage production",
-    "prettier:check": "prettier 'src/**/*.{js,jsx}' --check",
+    "prettier:check": "prettier 'src/**/*.{js,ts}' --check",
     "lint": "eslint src/** --ext .ts",
     "lint:fix": "eslint src/** --ext .ts --fix",
     "preBuild": "tsc",
@@ -37,8 +37,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint  --ext .jsx --ext .js --fix"
+    "*.{js,ts}": [
+      "eslint  --ext .ts --ext .js --fix"
     ]
   },
   "devDependencies": {

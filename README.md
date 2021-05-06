@@ -1,4 +1,5 @@
-# sls-git-template
+# photo-services-hello-world
+
 This is a template for creating a serverless typescript application (e.g. service/api)
 You can use this as the boiler plate when creating your own repo!
 
